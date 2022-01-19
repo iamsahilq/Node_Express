@@ -12,8 +12,8 @@ app.use(
 );
 app.use('/api', Routes);
 
-app.get('/', (req, res) => {
-  res.send('foo');
+app.get('/ping', (req, res) => {
+  res.send(true);
 });
 
 app.use((req, res) => {
