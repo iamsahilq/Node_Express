@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import Users from './users';
+import Users from './user';
 
 router.use('/users', Users);
 
