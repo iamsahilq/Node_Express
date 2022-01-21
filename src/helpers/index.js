@@ -11,14 +11,17 @@ export const errorResponse = (
   errorMessage = 'Something went wrong',
   code = 500,
   error = {},
-) =>
-  res.status(500).json({
-    code,
-    errorMessage,
-    error,
-    data: null,
-    success: false,
-  });
+) => {
+  // res.status(500).json({
+  //   code,
+  //   errorMessage,
+  //   error,
+  //   data: null,
+  //   success: false,
+  // });
+
+  res.status(code).render('pages/error', { message: errorMessage, error });
+};
 
 export const validateEmail = (email) => {
   const re =
