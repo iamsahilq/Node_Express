@@ -36,7 +36,7 @@ export const passportSignIn = () => {
         //check if user exists
         if (!user) {
           //handle
-          return res.render('pages/login', {
+          return res.status(400).render('pages/login', {
             errorMessage: 'Username/Password Incorrect.',
           });
         }

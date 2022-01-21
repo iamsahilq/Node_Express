@@ -19,7 +19,9 @@
         ></div>
 
         <div class="divider d-flex align-items-center my-4"></div>
-        <% errorMessage ? `actual_error_here` : `Error not displayed` %>
+        <% if(typeof errorMessage ==='string'){ %>
+        <p class="text-danger"><%= errorMessage.toString() %></p>
+        <% }%>
         <!-- Username input -->
         <div class="form-outline mb-4">
           <input
