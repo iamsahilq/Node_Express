@@ -3,13 +3,16 @@ import passport from 'passport';
 import * as passportJwt from 'passport-jwt';
 import * as passportLocal from 'passport-local';
 import { ExtractJwt } from 'passport-jwt';
+import * as passportGoogle from 'passport-google-oauth20';
 
 //local files
 import { JWT_SECRET } from './config';
 import { users } from './models/';
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
+const GoogleStrategy = passportGoogle.Strategy;
 
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK } = process.env;
 //JWT STRATEGY
 
 passport.use(
@@ -68,6 +71,23 @@ passport.use(
       } catch (error) {
         done(error, false);
       }
+    },
+  ),
+);
+
+// Google
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: GOOGLE_CALLBACK,
+      // passReqToCallback: true,
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      console.log('profile :>> ', profile);
+      cb(null, { accessToken, refreshToken, profile });
     },
   ),
 );

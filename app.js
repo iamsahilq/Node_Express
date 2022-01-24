@@ -25,6 +25,9 @@ app.use(
 app.get('/', function (req, res) {
   res.render('pages/index');
 });
+app.get('/dash', function (req, res) {
+  res.render('pages/dashboard');
+});
 
 app.get('/login', function (req, res) {
   res.render('pages/login');

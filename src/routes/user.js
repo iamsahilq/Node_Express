@@ -10,7 +10,11 @@ import * as userValidator from '../controllers/user/user.validator';
 const router = express.Router();
 
 // Authentication methods
-import { passportSignIn, passportJWT } from '../helpers/authentication';
+import {
+  passportSignIn,
+  passportJWT,
+  passportGoogle,
+} from '../helpers/authentication';
 
 router.post(
   '/createUser',
@@ -24,5 +28,9 @@ router.post(
   passportSignIn(),
   userController.login,
 );
+
+router.get('/auth/google', passportGoogle());
+
+router.get('/auth/google/callback', passportGoogle());
 
 export default router;

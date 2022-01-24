@@ -76,3 +76,37 @@ export const passportJWT = () => {
     })(req, res, next);
   };
 };
+
+export const passportGoogle = () => {
+  return (req, res, next) => {
+    passport.authenticate(
+      'google',
+      { scope: ['profile', 'email'], failureRedirect: '/login' },
+      (err, user, info) => {
+        console.log('user :>> ', user);
+        //log if any info
+        //check if any error
+        if (!user) {
+          return res.status(403).send({ status: 0, message: 'invalid token' });
+        }
+        if (err) {
+          //log error
+          //respond with error
+          return res
+            .status(500)
+            .send({ status: 0, message: 'Error Occurred. Please Try Again.' });
+        }
+        //check if user exists
+        else if (!user) {
+          //handle
+          return res
+            .status(401)
+            .send({ status: 4, message: 'Incorrect Credentials' });
+        }
+        req.user = user;
+        //call next function in pipeline
+        next();
+      },
+    )(req, res, next);
+  };
+};

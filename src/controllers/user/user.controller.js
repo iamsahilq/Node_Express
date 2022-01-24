@@ -26,15 +26,16 @@ const userController = {
       const { user } = req;
       console.log('user.username :>> ', user.username);
       const jwt = signToken(user);
-      return successResponse(
-        req,
-        res,
-        {
-          jwt,
-          user,
-        },
-        200,
-      );
+      res.render('pages/dashboard', { jwt });
+      // return successResponse(
+      //   req,
+      //   res,
+      //   {
+      //     jwt,
+      //     user,
+      //   },
+      //   200,
+      // );
     } catch (error) {
       console.log('error :>> ', error);
       return errorResponse(req, res, error.message);
