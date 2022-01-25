@@ -9,12 +9,19 @@ import * as userValidator from '../controllers/user/user.validator';
 
 const router = express.Router();
 
-// Authentication methods
+// // Authentication methods
 import {
-  passportSignIn,
-  passportJWT,
+  // passportSignIn,
+  // passportJWT,
   passportGoogle,
 } from '../helpers/authentication';
+//require passport configuration
+require('../../config/passport');
+
+const passportSignIn = passport.authenticate('local', {
+  failureRedirect: '/login-failure',
+  successRedirect: 'login-success',
+});
 
 router.post(
   '/createUser',
@@ -25,12 +32,15 @@ router.post(
 router.post(
   '/login',
   validate(userValidator.login),
-  passportSignIn(),
-  userController.login,
+  // passportSignIn(),
+  passportSignIn,
+  // userController.login,
 );
 
 router.get('/auth/google', passportGoogle());
 
 router.get('/auth/google/callback', passportGoogle());
+
+router.use((req, res, next) => next());
 
 export default router;

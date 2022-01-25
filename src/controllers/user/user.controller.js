@@ -15,18 +15,18 @@ const userController = {
         updatedAt: new Date().toISOString(),
       });
       await newUser.save();
-      return successResponse(req, res, { ...req.body });
+      res.redirect('/login');
+      // return successResponse(req, res, { ...req.body });
     } catch (error) {
-      console.log('error :>> ', error);
       return errorResponse(req, res, error.message);
     }
   },
   login: async (req, res) => {
     try {
       const { user } = req;
-      console.log('user.username :>> ', user.username);
-      const jwt = signToken(user);
-      res.render('pages/dashboard', { jwt });
+      return res.render('pages/dash');
+      // const jwt = signToken(user);
+      // res.render('pages/dashboard', { jwt });
       // return successResponse(
       //   req,
       //   res,
@@ -37,7 +37,6 @@ const userController = {
       //   200,
       // );
     } catch (error) {
-      console.log('error :>> ', error);
       return errorResponse(req, res, error.message);
     }
   },

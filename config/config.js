@@ -12,6 +12,8 @@ module.exports = {
     database: 'node_express_dev',
     host: DB_HOST,
     dialect: 'postgres',
+    // disable logging; default: console.log
+    logging: false,
   },
   test: {
     username: DB_USERNAME,

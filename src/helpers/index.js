@@ -12,6 +12,7 @@ export const errorResponse = (
   code = 500,
   error = {},
 ) => {
+  console.log('🚀 ~ file: index.js ~ line 15 ~ error', error);
   // res.status(500).json({
   //   code,
   //   errorMessage,

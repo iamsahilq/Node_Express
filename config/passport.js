@@ -6,8 +6,8 @@ import { ExtractJwt } from 'passport-jwt';
 import * as passportGoogle from 'passport-google-oauth20';
 
 //local files
-import { JWT_SECRET } from './config';
-import { users } from './models/';
+import { JWT_SECRET } from './index';
+import { users } from '../models';
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
 const GoogleStrategy = passportGoogle.Strategy;
@@ -43,36 +43,31 @@ passport.use(
 
 passport.use(
   //local strategy uses Username
-  new LocalStrategy(
-    {
-      usernameField: 'username',
-    },
-    async (username, password, done) => {
-      try {
-        // Find the user given the email
-        const user = await users.findOne({
-          where: {
-            username,
-          },
-        });
-        // If not, handle it
-        if (!user) {
-          return done(null, false);
-        }
-        // Check if the password is correct
-        const isMatch = await user.validPassword(password);
-        // If not, handle it
-        if (!isMatch) {
-          return done(null, false);
-        }
-
-        // Otherwise, return the user
-        done(null, user);
-      } catch (error) {
-        done(error, false);
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      // Find the user given the email
+      const user = await users.findOne({
+        where: {
+          username,
+        },
+      });
+      // If not, handle it
+      if (!user) {
+        return done(null, false);
       }
-    },
-  ),
+      // Check if the password is correct
+      const isMatch = await user.validPassword(password);
+      // If not, handle it
+      if (!isMatch) {
+        return done(null, false);
+      }
+
+      // Otherwise, return the user
+      done(null, user);
+    } catch (error) {
+      done(error, false);
+    }
+  }),
 );
 
 // Google
@@ -91,3 +86,20 @@ passport.use(
     },
   ),
 );
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  users.findOne(
+    {
+      where: {
+        id,
+      },
+    },
+    (err, user) => {
+      done(err, user);
+    },
+  );
+});
