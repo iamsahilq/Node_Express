@@ -86,7 +86,7 @@ app.use('/api', Routes);
 app.use(errorHandler);
 
 app.use((req, res) => {
-  return res.render('pages/404');
+  return res.render('pages/404', { url: req.url });
 });
 
 export default app;

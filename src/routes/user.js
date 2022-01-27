@@ -13,8 +13,8 @@ const router = express.Router();
 require('../../config/passport');
 import {
   // passportSignIn,
-  passportJWT,
-  passportGoogle,
+  // passportJWT,
+  // passportGoogle,
   isAuth,
 } from '../helpers/authentication';
 //require passport configuration
@@ -23,6 +23,12 @@ require('../../config/passport');
 const passportSignIn = passport.authenticate('local', {
   failureRedirect: '/login-failure',
   successRedirect: 'login-success',
+});
+
+const passportGoogle = passport.authenticate('google', {
+  scope: ['profile', 'email'],
+  failureRedirect: '/api/users/login-failure',
+  successRedirect: '/api/users/login-success',
 });
 
 router.post(
@@ -42,9 +48,17 @@ router.get('/dash', isAuth, function (req, res) {
   res.render('pages/dash');
 });
 
-router.get('/auth/google', passportGoogle());
+router.get(
+  '/auth/google',
+  // passportGoogle(),
+  passportGoogle,
+);
 
-router.get('/auth/google/callback', passportGoogle());
+router.get(
+  '/auth/google/callback',
+  // passportGoogle(),
+  passportGoogle,
+);
 
 router.get('/login-success', (req, res, next) => {
   res.send(
@@ -58,7 +72,5 @@ router.get('/login-failure', (req, res, next) => {
 router.get('/protected-route', isAuth, (req, res, next) => {
   res.send('You made it to the route.');
 });
-
-router.use((req, res, next) => next());
 
 export default router;

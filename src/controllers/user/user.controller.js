@@ -40,6 +40,9 @@ const userController = {
       return errorResponse(req, res, error.message);
     }
   },
+  googleCallback: async (req, res) => {
+    console.log('req.user :>> ', req.user);
+  },
 };
 
 export default userController;

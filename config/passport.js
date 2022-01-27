@@ -86,15 +86,10 @@ passport.use(
   ),
 );
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+passport.serializeUser(function (user, done) {
+  done(null, user);
 });
 
-passport.deserializeUser((userId, done) => {
-  users
-    .findByPk(userId)
-    .then((user) => {
-      done(null, user);
-    })
-    .catch((err) => done(err));
+passport.deserializeUser(function (user, done) {
+  done(null, user);
 });
