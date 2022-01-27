@@ -81,25 +81,20 @@ passport.use(
       // passReqToCallback: true,
     },
     function (accessToken, refreshToken, profile, cb) {
-      console.log('profile :>> ', profile);
       cb(null, { accessToken, refreshToken, profile });
     },
   ),
 );
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-  users.findOne(
-    {
-      where: {
-        id,
-      },
-    },
-    (err, user) => {
-      done(err, user);
-    },
-  );
+passport.deserializeUser((userId, done) => {
+  users
+    .findByPk(userId)
+    .then((user) => {
+      done(null, user);
+    })
+    .catch((err) => done(err));
 });

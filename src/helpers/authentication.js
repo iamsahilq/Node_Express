@@ -20,8 +20,10 @@ require('../../config/passport');
 export const passportSignIn = () => {
   return (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
+      console.log('🚀 ~ file: authentication.js ~ line 23 ~ user', user);
       //check if any error
       if (err) {
+        console.log('🚀 ~ file: authentication.js ~ line 25 ~ err', err);
         //log error
         //respond with error
         return res.status(500).send({
@@ -32,7 +34,7 @@ export const passportSignIn = () => {
       //check if user exists
       if (!user) {
         //handle
-        return res.status(400).render('pages/login', {
+        return res.status(401).render('pages/login', {
           errorMessage: 'Username/Password Incorrect.',
         });
       }
@@ -101,4 +103,15 @@ export const passportGoogle = () => {
       },
     )(req, res, next);
   };
+};
+
+export const isAuth = (req, res, next) => {
+  console.log('req.isAuthenticated() :>> ', req.isAuthenticated());
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    return res.status(401).render('pages/login', {
+      errorMessage: 'You are not authorized to view this resource',
+    });
+  }
 };

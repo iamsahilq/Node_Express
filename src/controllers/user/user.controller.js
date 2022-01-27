@@ -24,7 +24,7 @@ const userController = {
   login: async (req, res) => {
     try {
       const { user } = req;
-      return res.render('pages/dash');
+      return res.redirect('dash');
       // const jwt = signToken(user);
       // res.render('pages/dashboard', { jwt });
       // return successResponse(
